@@ -35,7 +35,7 @@ def write_to_csv(songs, index=0):
     # songs_df.dropna(how="all")
 
     if index == 0:
-        songs_df.to_csv(csv_fullpath)
+        songs_df.to_csv(csv_fullpath, header=True)
     else:
         with open(csv_fullpath, 'a') as f:
             songs_df.to_csv(f, header=False)
@@ -68,28 +68,26 @@ def read_csv_in_chunks(path, spotify):
     num_chunks = int(rows / chunksize)
     starting_now = False
 
-    for index, chunk in enumerate(pd.read_csv(path, chunksize=chunksize)):
-        print(f"""Extracting features for chunk {index + 1} / {num_chunks}""")
-
+    for chunk_index, chunk in enumerate(pd.read_csv(path, chunksize=chunksize)):
+        print(f"""Extracting features for chunk {chunk_index + 1} / {num_chunks}""")
         try:
             features = extract_song_features_in_chunks(list(chunk["trackid"]),
                                                        spotify)
+            for feature in features:
+                if len(feature) < 10:
+                    print("STOP")
         except:
             spotify = initialize_spotify_connection()
             features = extract_song_features_in_chunks(list(chunk["trackid"]),
                                                        spotify)
 
-
-        # if in chunk, create new list that trunucates chunk and set starting_now = True
-        # Only write to file if starting_now = True
-
-        for index, (trackid, song_feature) in enumerate(zip(list(chunk["trackid"]), features)):
+        for feature_index, (trackid, song_feature) in enumerate(zip(list(chunk["trackid"]), features)):
             if song_feature is None:
-                features[index] = {"trackid": trackid}
+                features[feature_index] = {"trackid": trackid}
             else:
                 song_feature["trackid"] = trackid
 
-        write_to_csv(features, index)
+        write_to_csv(features, chunk_index)
 
 
 def main():
