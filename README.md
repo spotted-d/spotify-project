@@ -10,12 +10,12 @@ From here, we can retrieve, query, join, and manipulate the entirety of the data
 
 ### Setup Instructions
 
-The following setup should take just a few minutes.
+The following setup should take just a few minutes, and allow you to import all the data into an EDA notebook.
 
 #### 1. Create a service account. 
 Go to https://console.cloud.google.com/iam-admin/serviceaccounts?project=spotted-d. Once you are on this page, go to the "actions" tab, where there will be a drop-down indicated by three dots on the right-most part of the corresponding account. Click "Create Key" which will download a key for you somewhere on your local machine. Save it somewhere safe. :-)  
 
-If you plan to store it on this git project, make sure to put in a folder that is git-ignored so that we don't push it up to Github. I actually created a .gitignore file on this branch. If you create a directory called "config" under the top-level directory of this repository and stick your service key in there, it should be automatically ignored. Ask me if you want any help.
+If you plan to store it on this git project, make sure to put in a folder that is git-ignored so that we don't push it up to Github. If you create a directory called "config" under the top-level directory of this repository and stick your service key in there, it should be automatically git-ignored.
 
 #### 2. Set up implicit authentication with gCloud
 If you are using Mac, just run this on your command line:
